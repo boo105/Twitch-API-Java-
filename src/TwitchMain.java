@@ -1,3 +1,6 @@
+import netscape.javascript.JSObject;
+import org.json.simple.JSONObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -6,15 +9,15 @@ import java.net.URL;
 public class TwitchMain {
     private static final String cliendId = "rhyxuce818fcwpytxr495867i02eiz";
     private static final String redirectURL = "http://localhost";
-    private static final String tempAccessToken = "Bearer qs9ypu1ytvd718bs1x2auero0f4ed9";
     private static final String tempSecret = "wnj3usc2hjuzs4k2y3l7g5xfzh574o";
+    private static String accessToken = "";
 
     public static void main(String[] args) {
-
-        //getChannel("44445592");
         Auth();
+        getChannel("44445592");
     }
 
+    // 일단 채널 얻어오는기능인데 임시
     private static void getChannel(String channelName)
     {
         URL url;
@@ -23,15 +26,18 @@ public class TwitchMain {
         try
         {
             url = new URL("https://api.twitch.tv/helix/channels?broadcaster_id="  + channelName);
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestProperty("Client-ID", cliendId);
-            connection.setRequestProperty("Authorization", tempAccessToken);
-            connection.setRequestMethod("GET");
+
+            // 헤더 설정
+            JSONObject headers = new JSONObject();
+            headers.put("Client-ID",cliendId);
+            headers.put("Authorization","Bearer " + accessToken);
+
+            connection = URLConnect.getConnection(url,"GET",headers);
             connection.connect();
 
-            PrintResponseState(connection);
+            URLConnect.PrintResponseState(connection);
 
-            StringBuffer response = getResponse(connection);
+            StringBuffer response = URLConnect.getResponse(connection);
             System.out.println("Response : " + response.toString());
         }
         catch(Exception e)
@@ -60,13 +66,16 @@ public class TwitchMain {
                     "&client_secret=" + tempSecret +
                     "&grant_type=client_credentials");
 
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
+            connection = URLConnect.getConnection(url,"POST",null);
             connection.connect();
-            PrintResponseState(connection);
 
-            StringBuffer response = getResponse(connection);
-            System.out.println("Response : " + response.toString());
+            URLConnect.PrintResponseState(connection);
+
+            // response 에서 Access token 값 추출
+            StringBuffer response = URLConnect.getResponse(connection);
+            JSONObject data = ConvertJson.getJson(response.toString());
+            accessToken = data.get("access_token").toString();
+            System.out.println("access token : " + accessToken);
         }
         catch(Exception e)
         {
@@ -77,46 +86,5 @@ public class TwitchMain {
             if(connection != null)
                 connection.disconnect();
         }
-    }
-
-    // Response상태 출력
-    private static void PrintResponseState(HttpURLConnection connection)
-    {
-        try
-        {
-            System.out.println("URL : " + connection.getURL());
-            System.out.println("Request Method : " + connection.getRequestMethod());
-            System.out.println("Request Code : " + connection.getResponseCode());
-            System.out.println("Message : " + connection.getResponseMessage());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    // body값(응답) 출력
-    private static StringBuffer getResponse(HttpURLConnection connection)
-    {
-        try
-        {
-            // Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            reader.close();
-            return response;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }
