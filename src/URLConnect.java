@@ -77,4 +77,37 @@ public class URLConnect {
 
         return null;
     }
+
+    // API 서버에 Connect 요청 한뒤 Response를 받음
+    public static JSONObject apiConnect(HttpURLConnection connection)
+    {
+        StringBuffer response = null;
+        JSONObject data = null;
+
+        // connection 잘못 될시 처리
+        if(connection == null)
+        {
+            System.out.println("커넥션 미싱");
+            return null;
+        }
+
+        try
+        {
+            connection.connect();
+
+            // 응답 상태 확인
+            URLConnect.PrintResponseState(connection);
+
+            response = URLConnect.getResponse(connection);
+            data = ConvertJson.getJson(response.toString());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+
 }
