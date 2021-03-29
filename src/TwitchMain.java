@@ -11,7 +11,6 @@ import java.util.List;
 
 public class TwitchMain {
     private static final String cliendId = "rhyxuce818fcwpytxr495867i02eiz";
-    private static final String redirectURL = "http://localhost";
     private static final String tempSecret = "wnj3usc2hjuzs4k2y3l7g5xfzh574o";
     private static String accessToken = "";
 
@@ -21,6 +20,13 @@ public class TwitchMain {
 
     private static URL url = null;
     private static HttpURLConnection connection = null;
+
+    public TwitchMain()
+    {
+        streamers = new ArrayList<>();
+
+        Auth();
+    }
 
     public static void main(String[] args) {
         streamers = new ArrayList<>();
@@ -95,7 +101,7 @@ public class TwitchMain {
         }
     }
 
-    private static String getUserId(String id)
+    public static String getUserId(String id)
     {
         System.out.println("\ngetUser API 실행");
         try
@@ -112,23 +118,23 @@ public class TwitchMain {
             JSONArray jsonArray = (JSONArray) data.get("data");
             data = (JSONObject) jsonArray.get(0);
 
+            System.out.println("data : " + data);
+
             return (String) data.get("id");
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            return null;
         }
         finally
         {
             if(connection != null)
                 connection.disconnect();
         }
-
-        return null;
     }
 
     // follow 한 채널 얻기
-    private static void getUserFollows(String id)
+    public static void getUserFollows(String id)
     {
         System.out.println("\ngetUserFollows API 실행");
         try
@@ -157,7 +163,6 @@ public class TwitchMain {
                 streamer.to_string();
                 streamers.add(streamer);
             }
-
         }
         catch(Exception e)
         {
@@ -208,5 +213,20 @@ public class TwitchMain {
             if(connection != null)
                 connection.disconnect();
         }
+    }
+
+    public static String getUserId()
+    {
+        return userId;
+    }
+
+    public static void setUserId(String id)
+    {
+        userId = id;
+    }
+
+    public static List<Streamer> getStremaers()
+    {
+        return streamers;
     }
 }

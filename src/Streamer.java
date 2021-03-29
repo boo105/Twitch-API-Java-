@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 public class Streamer {
     private String id;      // 트위치 서버에서 스트리머를 구분하는 id
     private String login;   // 스트리머가 로그인할때 사용하는 id
@@ -28,5 +30,11 @@ public class Streamer {
     public void to_string()
     {
         System.out.println("name : " + name + "\tid : " + id + "\tlogin : " + login);
+    }
+
+    public String[] getInfo()
+    {
+        String[] info = {name,id,login};
+        return info;
     }
 }
