@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TwitchMain {
+    private static TwitchMain instance;
+
     private static final String cliendId = "rhyxuce818fcwpytxr495867i02eiz";
     private static final String tempSecret = "wnj3usc2hjuzs4k2y3l7g5xfzh574o";
     private static String accessToken = "";
@@ -24,19 +26,27 @@ public class TwitchMain {
     public TwitchMain()
     {
         streamers = new ArrayList<>();
-
         Auth();
+    }
+
+    public static TwitchMain getInstance()
+    {
+        if(instance == null)
+            instance = new TwitchMain();
+
+        return instance;
     }
 
     public static void main(String[] args) {
         streamers = new ArrayList<>();
 
+        /*
         Auth();
         userId = getUserId("boo105");
         getUserFollows(userId);
         getChannel("103825127");
         getStreamInfo(streamers.get(47));
-
+        */
         /*
         풍월량 : 103825127 (47번 배열)
         침착맨 : 66375105 (46번 배열)
@@ -44,15 +54,11 @@ public class TwitchMain {
     }
 
     // 인증 및 Access Token 획득
-    private static void Auth()
+    private void Auth()
     {
         System.out.println("인증 API 실행");
         try
         {
-            /*
-            url = new URL("https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=" + cliendId +
-                    "&redirect_uri=" + redirectURL +
-                    "&scope=viewing_activity_read&state=c3ab8aa609ea11e793ae92361f002671");*/
             url = new URL("https://id.twitch.tv/oauth2/token?client_id=" + cliendId +
                     "&client_secret=" + tempSecret +
                     "&grant_type=client_credentials");
@@ -73,7 +79,7 @@ public class TwitchMain {
     }
 
     // 일단 채널 얻어오는기능인데 임시
-    private static void getChannel(String channelName)
+    public void getChannel(String channelName)
     {
         System.out.println("\ngetChannel API 실행");
         try
@@ -101,7 +107,7 @@ public class TwitchMain {
         }
     }
 
-    public static String getUserId(String id)
+    public String getUserId(String id)
     {
         System.out.println("\ngetUser API 실행");
         try
@@ -134,7 +140,7 @@ public class TwitchMain {
     }
 
     // follow 한 채널 얻기
-    public static void getUserFollows(String id)
+    public void getUserFollows(String id)
     {
         System.out.println("\ngetUserFollows API 실행");
         try
@@ -176,7 +182,7 @@ public class TwitchMain {
     }
 
     // 생방송 정보를 획득
-    private static void getStreamInfo(Streamer streamer)
+    public void getStreamInfo(Streamer streamer)
     {
         System.out.println("\ngetStreamInfo API 실행");
         try
@@ -201,7 +207,7 @@ public class TwitchMain {
                 data = (JSONObject) jsonArray.get(0);
                 live = (String) data.get("type");
             }
-
+            streamer.setIsLive(live);
             System.out.println(streamer.getName() + " 의 상태 : " + live);
         }
         catch(Exception e)
@@ -215,17 +221,25 @@ public class TwitchMain {
         }
     }
 
-    public static String getUserId()
+    public void setStreamersInfo()
+    {
+        for(Streamer streamer : streamers)
+        {
+            getStreamInfo(streamer);
+        }
+    }
+
+    public String getUserId()
     {
         return userId;
     }
 
-    public static void setUserId(String id)
+    public void setUserId(String id)
     {
         userId = id;
     }
 
-    public static List<Streamer> getStremaers()
+    public List<Streamer> getStremaers()
     {
         return streamers;
     }

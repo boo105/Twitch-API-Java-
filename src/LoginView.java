@@ -6,14 +6,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class LoginView extends JFrame{
+    private static LoginView instance;
+
     private JButton btnLogin;
-    private JButton btnInit;
     private JTextField userText;
     private boolean bLoginCheck;
+
+    private TwitchMain twitchApi;
 
     public LoginView() {
         // setting
@@ -32,6 +34,15 @@ public class LoginView extends JFrame{
 
         // visiible
         setVisible(true);
+
+        twitchApi = TwitchMain.getInstance();
+    }
+
+    public static LoginView getInstance()
+    {
+        if(instance == null)
+            instance = new LoginView();
+        return instance;
     }
 
     public void placeLoginPanel(JPanel panel){
@@ -46,7 +57,7 @@ public class LoginView extends JFrame{
 
 
         btnLogin = new JButton("Login");
-        btnLogin.setBounds(160, 80, 100, 25);
+        btnLogin.setBounds(10, 55, 250, 40);
         panel.add(btnLogin);
         btnLogin.addActionListener(new ActionListener() {
             @Override
@@ -57,29 +68,20 @@ public class LoginView extends JFrame{
     }
 
     public void isLoginCheck(){
-        String userId = Main.twitchApi.getUserId(userText.getText());
+        String userId = twitchApi.getUserId(userText.getText());
 
         if(userId != null)
         {
+            Main main = Main.getInstance();
             bLoginCheck = true;
-            Main.twitchApi.setUserId(userId);
-            Main.showMainFrame();
+            twitchApi.setUserId(userId);
+            twitchApi.getUserFollows(userId);
+            dispose();
+
+            main.showMainFrame();
         }
         else
             JOptionPane.showMessageDialog(null,"잘못된 id입니다");
-
-        /*
-        if(userText.getText().equals("test") && new String(passText.getPassword()).equals("1234")){
-            JOptionPane.showMessageDialog(null, "Success");
-            bLoginCheck = true;
-
-            // 로그인 성공이라면 매니져창 뛰우기
-            if(isLogin()){
-                main.showFrameTest(); // 메인창 메소드를 이용해 창뛰우기
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Faild");
-        }*/
     }
 
     public boolean isLogin() {
