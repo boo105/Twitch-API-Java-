@@ -1,3 +1,8 @@
+package Api.Frame;
+
+import Api.Twitch.TwitchMain;
+import Api.Main;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -78,7 +83,7 @@ public class LoginView extends JFrame{
             twitchApi.getUserFollows(userId);
             dispose();
 
-            main.showMainFrame();
+            main.DataProcess();
         }
         else
             JOptionPane.showMessageDialog(null,"잘못된 id입니다");

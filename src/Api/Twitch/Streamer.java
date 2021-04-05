@@ -1,4 +1,4 @@
-import java.lang.reflect.Array;
+package Api.Twitch;
 
 public class Streamer {
     private String id;      // 트위치 서버에서 스트리머를 구분하는 id
