@@ -3,6 +3,7 @@ package Api;
 import Api.Frame.*;
 import Api.Twitch.*;
 
+import javax.swing.*;
 import java.util.List;
 
 public class Main {
@@ -12,7 +13,7 @@ public class Main {
 
     private TwitchMain twitchApi;
 
-    private static String header[] = {"이름","생방송","포인트"};
+    private static String header[] = {"이름","생방송"};
     private static String streamersInfo[][];
 
     public Main()
@@ -41,6 +42,10 @@ public class Main {
             public void run() {
                 setStreamersInfo();
             }
+        };
+
+        Runnable test = () -> {
+            setStreamersInfo();
         };
 
         Thread worker = new Thread(increaseProgress);

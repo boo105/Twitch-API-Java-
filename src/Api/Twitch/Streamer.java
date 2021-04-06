@@ -37,7 +37,7 @@ public class Streamer {
 
     public String[] getInfo()
     {
-        String[] info = {name,isLive,login};
+        String[] info = {name,isLive};
         return info;
     }
 }
