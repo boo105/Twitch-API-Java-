@@ -28,6 +28,8 @@ public class Streamer {
         return name;
     }
 
+    public String getIsLive() { return isLive; }
+
     public void to_string()
     {
         System.out.println("name : " + name + "\tid : " + id + "\tlogin : " + login);

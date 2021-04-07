@@ -2,6 +2,7 @@ package Api.Frame;
 
 import Api.Panel.ClipPanel;
 import Api.Twitch.*;
+import javafx.embed.swing.JFXPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,9 @@ public class MainFrame extends JFrame{
     {
         twitchApi = TwitchMain.getInstance();
         streamerList = twitchApi.getStremaers();
-        JPanel panel = new JPanel();
+
+        // 클립 패널 추가
+        ClipPanel clipPanel = ClipPanel.getInstance();
 
         // 스트리머 정보 테이블 설정
         JTable table = new JTable(streamersInfo,header) { //수정불가
@@ -37,11 +40,15 @@ public class MainFrame extends JFrame{
                 if(e.getButton() == 1)  // 클릭
                 {
                     Streamer streamer = streamerList.get(table.getSelectedRow());
-                    List<String> url_list = twitchApi.getClipsURL(streamer.getId());
+                    String url = "https://www.twitch.tv/" + streamer.getLogin();
+                    if(streamer.getIsLive().equals("offline"))
+                        url += "/clips?filter=clips&range=30d";
+                    else
+                        url = "https://www.twitch.tv/popout/" + streamer.getLogin() + "/chat?popout=";
+                    //List<String> url_list = twitchApi.getClipsURL(streamer.getId());
 
                     streamer.to_string();
-                    for(String url : url_list)
-                        System.out.println(url);
+                    clipPanel.AddWebView(url);
                 }
             }
         });
@@ -52,11 +59,6 @@ public class MainFrame extends JFrame{
         add(scrollPane);
         pack();
 
-        panel.add(new JLabel("Hello World!"));
-        add(panel);
-
-        // 클립 패널 추가
-        JPanel clipPanel = new ClipPanel();
         add(clipPanel);
         getContentPane().add(clipPanel,BorderLayout.EAST);
 

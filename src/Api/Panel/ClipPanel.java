@@ -9,25 +9,32 @@ import javafx.scene.web.WebView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClipPanel extends JPanel {
 
+    private static ClipPanel instance;
+    private WebEngine webEngine;
+
     public ClipPanel()
     {
-
         JFXPanel fxPanel = new JFXPanel();
-        JFXPanel fxPanel2 = new JFXPanel();
-        JFXPanel fxPanel3 = new JFXPanel();
-        JFXPanel fxPanel4 = new JFXPanel();
 
-        setLayout(new GridLayout(2,2));
+        //setLayout(new GridLayout(2,2));
 
+        Platform.runLater(() -> {
+            initFX(fxPanel);
+        });
+        add(fxPanel);
+    }
 
-        // 쓰레드 4개로 돌려서 작업해야함
-        AddWebView(fxPanel);
-        AddWebView(fxPanel2);
-        AddWebView(fxPanel3);
-        AddWebView(fxPanel4);
+    public static ClipPanel getInstance()
+    {
+        if(instance == null)
+            instance = new ClipPanel();
+
+        return instance;
     }
 
     private void initFX(JFXPanel fxPanel)
@@ -39,21 +46,18 @@ public class ClipPanel extends JPanel {
         WebView webView = new WebView();
 
         group.getChildren().add(webView);
-        webView.setMinSize(500, 400);
-        webView.setMaxSize(500, 400);
+        webView.setMinSize(800, 700);
+        webView.setMaxSize(800, 700);
 
-        WebEngine webEngine = webView.getEngine();
-
-        webEngine.load("https://www.twitch.tv/hanryang1125/clip/GoodTolerantGrassPipeHype-0cBJ9PbUZlkVfvft?filter=clips&range=30d&sort=time");
+        webEngine = webView.getEngine();
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
     }
 
-    public void AddWebView(final JFXPanel fxPanel)
+    public void AddWebView(String url)
     {
         Platform.runLater(() -> {
-            initFX(fxPanel);
+            webEngine.load(url);
         });
-
-        add(fxPanel);
     }
 
 }
