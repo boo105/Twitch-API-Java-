@@ -2,7 +2,6 @@ package Api.Frame;
 
 import Api.Panel.ClipPanel;
 import Api.Twitch.*;
-import javafx.embed.swing.JFXPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,12 +39,9 @@ public class MainFrame extends JFrame{
                 if(e.getButton() == 1)  // 클릭
                 {
                     Streamer streamer = streamerList.get(table.getSelectedRow());
-                    String url = "https://www.twitch.tv/" + streamer.getLogin();
-                    if(streamer.getIsLive().equals("offline"))
-                        url += "/clips?filter=clips&range=30d";
-                    else
+                    String url = "https://www.twitch.tv/" + streamer.getLogin() + "/clips?filter=clips&range=30d";
+                    if(streamer.getIsLive().equals("live"))
                         url = "https://www.twitch.tv/popout/" + streamer.getLogin() + "/chat?popout=";
-                    //List<String> url_list = twitchApi.getClipsURL(streamer.getId());
 
                     streamer.to_string();
                     clipPanel.AddWebView(url);
@@ -65,8 +61,8 @@ public class MainFrame extends JFrame{
         setTitle("트위치 Application");
         setResizable(false);
         setVisible(true);
-        setPreferredSize(new Dimension(1500,1500/12*9));
-        setSize(1500,1500/12*9);
+        setPreferredSize(new Dimension(1500,500));
+        setSize(1500,500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

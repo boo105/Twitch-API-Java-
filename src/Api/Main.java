@@ -67,7 +67,7 @@ public class Main {
         for(Streamer streamer : streamers)
         {
             progressBar.setValue(count);
-            twitchApi.getStreamInfo(streamer);
+            twitchApi.setStreamInfo(streamer);
             count++;
         }
         progressBar.setValue(streamers.size());

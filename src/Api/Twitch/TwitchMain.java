@@ -181,7 +181,7 @@ public class TwitchMain {
     }
 
     // 생방송 정보를 획득
-    public void getStreamInfo(Streamer streamer)
+    public void setStreamInfo(Streamer streamer)
     {
         System.out.println("\ngetStreamInfo API 실행");
         try
@@ -219,50 +219,6 @@ public class TwitchMain {
                 connection.disconnect();
         }
     }
-
-    // Clip url 반환
-    public List<String> getClipsURL(String broadcaster_id)
-    {
-        System.out.println("\ngetClips API 실행");
-        try
-        {
-            // query값 first를 100을 줘서 최대 100개의 follows를 불러옴
-            url = new URL("        https://api.twitch.tv/helix/clips?broadcaster_id=" + broadcaster_id + "&first=4");
-            // 헤더 설정
-            JSONObject headers = new JSONObject();
-            headers.put("Client-ID",cliendId);
-            headers.put("Authorization","Bearer " + accessToken);
-
-            connection = URLConnect.getConnection(url,"GET",headers);
-            JSONObject data = URLConnect.apiConnect(connection);
-            System.out.println("data : " + data);
-
-            List<String> url_list= new ArrayList<>();
-
-            JSONArray jsonArray = (JSONArray) data.get("data");
-
-            for(Object object : jsonArray)
-            {
-                JSONObject jsonObject = (JSONObject) object;
-                String url = (String) jsonObject.get("url");
-                url_list.add(url);
-                System.out.println("URL : " + url);
-            }
-
-            return url_list;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        finally
-        {
-            if(connection != null)
-                connection.disconnect();
-        }
-    }
-
 
     public String getUserId()
     {

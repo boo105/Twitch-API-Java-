@@ -21,8 +21,6 @@ public class ClipPanel extends JPanel {
     {
         JFXPanel fxPanel = new JFXPanel();
 
-        //setLayout(new GridLayout(2,2));
-
         Platform.runLater(() -> {
             initFX(fxPanel);
         });
@@ -46,11 +44,10 @@ public class ClipPanel extends JPanel {
         WebView webView = new WebView();
 
         group.getChildren().add(webView);
-        webView.setMinSize(800, 700);
-        webView.setMaxSize(800, 700);
+        webView.setMinSize(1000, 420);
+        webView.setMaxSize(1000, 420);
 
         webEngine = webView.getEngine();
-        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
     }
 
     public void AddWebView(String url)
