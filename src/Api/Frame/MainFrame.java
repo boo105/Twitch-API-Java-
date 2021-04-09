@@ -16,7 +16,7 @@ public class MainFrame extends JFrame{
     private List<Streamer> streamerList;
 
 
-    public MainFrame(final String streamersInfo[][],final String header[])
+    private MainFrame(final String streamersInfo[][],final String header[])
     {
         twitchApi = TwitchMain.getInstance();
         streamerList = twitchApi.getStremaers();

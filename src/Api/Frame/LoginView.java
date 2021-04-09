@@ -24,7 +24,7 @@ public class LoginView extends JFrame{
 
     private TwitchMain twitchApi;
 
-    public LoginView() {
+    private LoginView() {
         // setting
         setTitle("login");
         setSize(280, 150);

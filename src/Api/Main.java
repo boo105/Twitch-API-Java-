@@ -16,7 +16,7 @@ public class Main {
     private static String header[] = {"이름","생방송"};
     private static String streamersInfo[][];
 
-    public Main()
+    private Main()
     {
         twitchApi = TwitchMain.getInstance();
     }

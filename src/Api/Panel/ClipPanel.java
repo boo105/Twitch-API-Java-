@@ -17,7 +17,7 @@ public class ClipPanel extends JPanel {
     private static ClipPanel instance;
     private WebEngine webEngine;
 
-    public ClipPanel()
+    private ClipPanel()
     {
         JFXPanel fxPanel = new JFXPanel();
 

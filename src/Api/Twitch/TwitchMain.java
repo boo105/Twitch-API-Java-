@@ -23,7 +23,7 @@ public class TwitchMain {
     private static URL url = null;
     private static HttpURLConnection connection = null;
 
-    public TwitchMain()
+    private TwitchMain()
     {
         streamers = new ArrayList<>();
         Auth();
