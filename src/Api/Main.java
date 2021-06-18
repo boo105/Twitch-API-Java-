@@ -2,8 +2,8 @@ package Api;
 
 import Api.Frame.*;
 import Api.Twitch.*;
+import Api.Utility.FileManager;
 
-import javax.swing.*;
 import java.util.List;
 
 public class Main {
@@ -60,13 +60,29 @@ public class Main {
     // 스트리머 방송상태 로딩
     private void setStreamersInfo()
     {
-        List<Streamer> streamers = twitchApi.getStremaers();
+        FileManager fileManager = FileManager.getInstance(twitchApi.getUserId());
+        List<Streamer> streamers;
+
+        if(fileManager.isInfoExist())
+        {
+            System.out.println("파일존재");
+            streamers = fileManager.getStreamers();
+        }
+        else
+        {
+            System.out.println("파일존재안함");
+            streamers = twitchApi.getStremaers();
+        }
+
         ProgressBar progressBar = new ProgressBar(0,streamers.size());
+        fileManager.setFileWriter();
+
         // 라이브 상태 불러오기 및 progressBar에 상태 반영
         int count = 0;
         for(Streamer streamer : streamers)
         {
             progressBar.setValue(count);
+            fileManager.WriteStreamer(streamer);
             twitchApi.setStreamInfo(streamer);
             count++;
         }

@@ -35,6 +35,11 @@ public class Streamer {
         System.out.println("name : " + name + "\tid : " + id + "\tlogin : " + login);
     }
 
+    public String to_string_forFile()
+    {
+        return id + "," + login + "," + name + "\n";
+    }
+
     public void setIsLive(String live) { isLive = live; }
 
     public String[] getInfo()
