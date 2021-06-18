@@ -94,8 +94,4 @@ public class LoginView extends JFrame{
         else
             JOptionPane.showMessageDialog(null,"잘못된 id입니다");
     }
-
-    public boolean isLogin() {
-        return bLoginCheck;
-    }
 }

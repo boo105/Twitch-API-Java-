@@ -12,16 +12,16 @@ import java.util.List;
 public class TwitchMain {
     private static TwitchMain instance;
 
-    private static final String cliendId = "rhyxuce818fcwpytxr495867i02eiz";
-    private static final String tempSecret = "wnj3usc2hjuzs4k2y3l7g5xfzh574o";
-    private static String accessToken = "";
+    private final String cliendId = "rhyxuce818fcwpytxr495867i02eiz";
+    private final String tempSecret = "wnj3usc2hjuzs4k2y3l7g5xfzh574o";
+    private String accessToken = "";
 
     // 유저 id
-    private static String userId;
-    private static List<Streamer> streamers;
+    private String userId;
+    private List<Streamer> streamers;
 
-    private static URL url = null;
-    private static HttpURLConnection connection = null;
+    private URL url = null;
+    private HttpURLConnection connection = null;
 
     private TwitchMain()
     {
@@ -35,21 +35,6 @@ public class TwitchMain {
             instance = new TwitchMain();
 
         return instance;
-    }
-
-    public static void main(String[] args) {
-        streamers = new ArrayList<>();
-        /*
-        Auth();
-        userId = getUserId("boo105");
-        getUserFollows(userId);
-        getChannel("103825127");
-        getStreamInfo(streamers.get(47));
-        */
-        /*
-        풍월량 : 103825127 (47번 배열)
-        침착맨 : 66375105 (46번 배열)
-         */
     }
 
     // 인증 및 Access Token 획득

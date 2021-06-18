@@ -13,8 +13,8 @@ public class Main {
 
     private TwitchMain twitchApi;
 
-    private static String header[] = {"이름","생방송"};
-    private static String streamersInfo[][];
+    private String header[] = {"이름","생방송"};
+    private String streamersInfo[][];
 
     private Main()
     {
@@ -64,15 +64,10 @@ public class Main {
         List<Streamer> streamers;
 
         if(fileManager.isInfoExist())
-        {
-            System.out.println("파일존재");
             streamers = fileManager.getStreamers();
-        }
         else
-        {
-            System.out.println("파일존재안함");
             streamers = twitchApi.getStremaers();
-        }
+
 
         ProgressBar progressBar = new ProgressBar(0,streamers.size());
         fileManager.setFileWriter();
